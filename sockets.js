@@ -62,52 +62,52 @@ client.on('data', function(data) {
 	console.log('Received: ' + data);
 }); */
 
-const sql = require('mssql');
+// const sql = require('mssql');
 
-const sqlConfig = {
+// const sqlConfig = {
        
-	user: "Administrador",							/* Usuario del SQLServer */
+// 	user: "Administrador",							/* Usuario del SQLServer */
        
-	password: "Alpes@2011",							/* Contraseña del SQLServer */
+// 	password: "Alpes@2011",							/* Contraseña del SQLServer */
        
-	domain: "ALPESASL",								/* Dominio en el que se encuentra el SQLServer */
+// 	domain: "ALPESASL",								/* Dominio en el que se encuentra el SQLServer */
        
-	database: "ScAlpesa07",							/* Base de datos a la cual queremos acceder */
+// 	database: "ScAlpesa07",							/* Base de datos a la cual queremos acceder */
 
-       server: 'sqlserver',								/* Nombre en el dominio del servidor al que queremos acceder */
-       pool: {
-              max: 10,
-              min: 0,
-              idleTimeoutMillis: 15000
-       },
-       options: {
-              cryptoCredentialsDetails: {
-                     minVersion: 'TLSv1' 						/* [IMPORTANTE] Si no se define esta configuración, no dejará loguear. */
-              },
-              trustServerCertificate: true
-       }
-}
+//        server: 'sqlserver',								/* Nombre en el dominio del servidor al que queremos acceder */
+//        pool: {
+//               max: 10,
+//               min: 0,
+//               idleTimeoutMillis: 15000
+//        },
+//        options: {
+//               cryptoCredentialsDetails: {
+//                      minVersion: 'TLSv1' 						/* [IMPORTANTE] Si no se define esta configuración, no dejará loguear. */
+//               },
+//               trustServerCertificate: true
+//        }
+// }
 
-sql.connect(sqlConfig, async function (err) {
+// sql.connect(sqlConfig, async function (err) {
 
-       if (err) console.log(err);
+//        if (err) console.log(err);
 
-       console.log("Conexión exitosa a la base de datos SQL Server.");
+//        console.log("Conexión exitosa a la base de datos SQL Server.");
 
-	try{
+// 	try{
 
-		let c_almacenada = new sql.Request();
+// 		let c_almacenada = new sql.Request();
 
-		let idequipo = await c_almacenada.input( "idMaquina", 5 ).execute( "procTerminal_EquiposProduccionVerActivo" );	
-		let idequipoprod = idequipo.recordset[0].idEquipoProduccion[0];
+// 		let idequipo = await c_almacenada.input( "idMaquina", 5 ).execute( "procTerminal_EquiposProduccionVerActivo" );	
+// 		let idequipoprod = idequipo.recordset[0].idEquipoProduccion[0];
 
-		let operarios = await c_almacenada.input("idEquipoProduccion", idequipoprod).execute( "procTerminal_OperariosProduccionVer" );	
+// 		let operarios = await c_almacenada.input("idEquipoProduccion", idequipoprod).execute( "procTerminal_OperariosProduccionVer" );	
 
-		console.log(operarios.recordset);
+// 		console.log(operarios.recordset);
 
-	}catch( err ){
+// 	}catch( err ){
 
-		console.log( "Error con la consulta almacenada: " + err );
+// 		console.log( "Error con la consulta almacenada: " + err );
 
-	}
-});
+// 	}
+// });
