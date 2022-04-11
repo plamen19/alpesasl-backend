@@ -131,5 +131,40 @@ module.exports = function(app, sql){
 	});
 	// --------------------------------------------------------------------------------------------
 
+	/* 
+	
+		PROCEDIMIENTOS: procTerminal_EquiposProduccionVerActivo, procTerminal_OperariosProduccionVer
+		PARÁMETROS: id
+		CONSULTA: Devuelve un array con los operarios que están en una máquina específica
+	
+	*/
+	app.get('/maquina/:id/operarios', (req, res) => {
+
+		try{
+
+			let getOperarios = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let idequipo = await c_almacenada.input( "idMaquina", 5 ).execute( "procTerminal_EquiposProduccionVerActivo" );	
+				let idequipoprod = idequipo.recordset[0].idEquipoProduccion[0];
+		
+				let operarios = await c_almacenada.input("idEquipoProduccion", idequipoprod).execute( "procTerminal_OperariosProduccionVer" );
+				
+				return res.json( operarios );
+			}
+
+			getOperarios();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// --------------------------------------------------------------------------------------------
+
    
 }
