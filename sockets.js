@@ -3,7 +3,7 @@
 // var client = new ModbusRTU();
 
 // // Abrimos una conexión a través de TCP con el PLC
-// client.connectTCP("192.168.30.21", { port: 502 });
+// client.connectTCP("192.168.30.20", { port: 502 });
 // client.setID(4);
 
 // // read the values of 10 registers starting at address 0
@@ -19,7 +19,6 @@
 
 // 			1, 2, 3, 4, 5, 6 = LA FECHA ACTUAL, D/M/Y/H/M/S
 // 			7 = EL ESTADO DE LA MÁQUINA
-// 			8 = LA VELOCIDAD DE LA MÁQUINA
 
 // 		*/
 

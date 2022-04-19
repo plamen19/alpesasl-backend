@@ -1,6 +1,14 @@
 module.exports = function( app){
 
 	let Net = require('net');
+	let cliente = Net.Socket();
+
+	cliente.connect(100, '192.168.1.18', function( err ) {
+					
+		if( err ){ throw err }
+		console.log( "[SPIN CLIENTE BACKEND] Conectado al servidor SPIN. A la escucha de tramas..." );
+
+	});
 
 	/* 
 		PARAMETRO: Código de la máquina (12B, P2...)
@@ -23,37 +31,25 @@ module.exports = function( app){
 		return format.replace(/mm|dd|yy|yyy/gi, matched => map[matched])
 	   }
 
-	app.get('/spincliente/:maquina/datos', async (req, res) => {
+	app.get('/spincliente/:maquina/datos', async (req, res, next) => {
 
-		let fecha = formatDate(new Date(), 'mm/dd/yy');
+		/* let fecha = formatDate(new Date(), 'mm/dd/yy');
 		let hora = (new Date()).toLocaleTimeString();
-		let ip = req.socket.remoteAddress 
-		let cliente = Net.Socket();
+		let ip = req.socket.remoteAddress; */
 
-		cliente.connect(100, '192.168.1.18', function( err ) {
-					
-			cliente.write( getTrama(req.params.maquina), (err) => {
-		
-				if( err ){
+		cliente.write( getTrama( req.params.maquina ), function(err){
+			
+			if( err ){ throw err }
 
-					console.log( "[SPIN API] ["+ fecha +"] ["+ ip +"] No se han podido obtener los datos de la maquina " + req.params.maquina );
-					return { err: 'No se han podido obtener los datos desde el servidor.' }
+			cliente.once( "data", function(data){
 
-				}
-		
+				res.status(200).json( { datos: data + "" } );
+
 			} );
 
-			cliente.on('data', function(data) {
-			
-				console.log( "[SPIN API] ["+ fecha +" | "+ hora +"] ["+ ip +"] Enviados datos de la máquina " + req.params.maquina );
-	
-				cliente.destroy();
-	
-				return res.json( { datos: data + "" } );
-	
-			});
+		} );
 
-		});
+		
 
 	});
 

@@ -17,7 +17,6 @@ module.exports = function( app, ModbusRTU ){
 	*/
 	app.get('/modbus/:maquina', (req, res) => {
 
-		let client = new ModbusRTU();
 		let ip_plc = lista_maquinas[req.params.maquina]
 
 		if( ip_plc ){
@@ -25,6 +24,8 @@ module.exports = function( app, ModbusRTU ){
 			// Abrimos una conexión a través de TCP con el PLC
 
 			try{
+
+				let client = new ModbusRTU();
 
 				client.connectTCP(ip_plc, { port: 502 }, ()=>{
 
@@ -63,6 +64,8 @@ module.exports = function( app, ModbusRTU ){
 				
 			}
 			
+		}else{
+			return res.status(200).json( { err: 'Esta máquina no tiene PLC integrado.' } );
 		}
 
 	});

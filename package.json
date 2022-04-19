@@ -14,7 +14,6 @@
     "express": "^4.17.3",
     "modbus-serial": "^8.0.5",
     "modbus-stream": "^0.46.0",
-    "modbus-tcp-ip": "^1.0.3",
     "msnodesqlv8": "^2.4.7",
     "mssql": "^8.0.2",
     "net": "^1.0.2",
