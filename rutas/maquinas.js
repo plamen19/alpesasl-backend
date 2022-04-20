@@ -204,5 +204,37 @@ module.exports = function(app, sql){
 	});
 	// --------------------------------------------------------------------------------------------
 
+	/* 
+	
+		PROCEDIMIENTOS: procTerminal_EquiposProduccionVerActivo
+		PARÁMETROS: id
+		CONSULTA: Devuelve un array con los datos del equipo de produccion activo en la maquina.
+	
+	*/
+	app.get('/maquina/:id/equipoprod', (req, res) => {
+
+		try{
+
+			let getOperarios = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let idequipo = await c_almacenada.input( "idMaquina", req.params.id ).execute( "procTerminal_EquiposProduccionVerActivo" );	
+				
+				return res.json( idequipo.recordset );
+			}
+
+			getOperarios();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// --------------------------------------------------------------------------------------------
+
    
 }
