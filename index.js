@@ -4,7 +4,7 @@ const winston = require('winston');
 const ModbusRTU = require("modbus-serial");
 const sql = require('mssql');
 const app = express();
-const port = 3000
+const port = 3000;
 
 /* 
 
@@ -20,7 +20,8 @@ const spinLogger = winston.createLogger({
 	defaultMeta: { service: 'user-service' },
 	transports: [
 		new winston.transports.File({ filename: './logs/spin/spin-error.log', level: 'error' }),
-		new winston.transports.File({ filename: './logs/spin/spin-api.log' }),
+		new winston.transports.File({ filename: './logs/spin/spin-info.log', level: 'info' }),
+		new winston.transports.File({ filename: './logs/spin/spin.log' }),
 	],
 });
 
@@ -92,6 +93,8 @@ require('./rutas/maquinas')(app, sql);						/* Rutas de la API para la informaci
 require('./rutas/operaciones')(app, sql);						/* Rutas de la API para la información de las [OPERACIONES]. */
 
 require('./rutas/operarios')(app, sql);						/* Rutas de la API para la información de los [OPERARIOS]. */
+
+require('./rutas/logs')(app);						/* Rutas de la API para la información de los [LOGS]. */
 
 
 /* -------------------------------------------------------------------- */
