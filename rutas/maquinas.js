@@ -236,5 +236,41 @@ module.exports = function(app, sql){
 	});
 	// --------------------------------------------------------------------------------------------
 
+	/* 
+	
+		PROCEDIMIENTOS: procTerminal_IndicadoresVer
+		PARÁMETROS: id
+		CONSULTA: Devuelve un array con los datos de producción para calcular el % de Merma generado.
+	
+	*/
+	app.post('/maquina/:id/merma', (req, res) => {
+
+		try{
+
+			let getMermaGenerada = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let indicadores = await c_almacenada
+					.input( "idMaquina", req.params.id )
+					.input( "fechaturno", req.body.fecha )
+					.input( "Turno", req.body.turno )
+					.execute( "procTerminal_IndicadoresVer" );	
+				
+				return res.json( indicadores.recordset );
+			}
+
+			getMermaGenerada();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// --------------------------------------------------------------------------------------------	
+
    
 }

@@ -3,6 +3,7 @@ const cors = require('cors');
 const winston = require('winston');
 const ModbusRTU = require("modbus-serial");
 const sql = require('mssql');
+const bodyParser = require('body-parser')
 const app = express();
 const port = 3000;
 
@@ -74,8 +75,10 @@ sql.connect(sqlConfig, function (err) {
 });
 
 /* Utilizamos CORS para utilizar las rutas de la API desde un host externo */
+/* Utilizamos BODYPARSER también para obtener los datos JSON enviados por POST */
 
 app.use( cors() );
+app.use(bodyParser.json())
 
 /* ----------------------------------------------------------------------- */
 
