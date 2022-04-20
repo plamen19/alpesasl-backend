@@ -1,9 +1,28 @@
 const express = require('express');
 const cors = require('cors');
+const winston = require('winston');
 const ModbusRTU = require("modbus-serial");
 const sql = require('mssql');
 const app = express();
 const port = 3000
+
+/* 
+
+	--------------------------------
+	CONFIGURACIÓN DEL LOGGER WINSTON
+	--------------------------------
+
+*/
+
+const spinLogger = winston.createLogger({
+	level: 'info',
+	format: winston.format.json(),
+	defaultMeta: { service: 'user-service' },
+	transports: [
+		new winston.transports.File({ filename: './logs/spin/spin-error.log', level: 'error' }),
+		new winston.transports.File({ filename: './logs/spin/spin-api.log' }),
+	],
+});
 
 /* 
 
@@ -64,7 +83,7 @@ app.use( cors() );
 
 require('./rutas/modbusdata')(app, ModbusRTU);					/* Rutas de la API para la información de Modbus en tiempo real */
 
-require('./rutas/spincliente')(app);					/* Rutas de la API para la información de SPIN en tiempo real */
+require('./rutas/spincliente')(app, spinLogger);					/* Rutas de la API para la información de SPIN en tiempo real */
 
 require('./rutas/boletines')(app, sql);						/* Rutas de la API para la información de los [BOLETINES]. */
 

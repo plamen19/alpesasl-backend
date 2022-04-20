@@ -1,12 +1,14 @@
-module.exports = function( app){
+module.exports = function( app, logger ){
 
 	let Net = require('net');
 	let cliente = Net.Socket();
 
 	cliente.connect(100, '192.168.1.18', function( err ) {
 					
-		if( err ){ throw err }
-		console.log( "[SPIN CLIENTE BACKEND] Conectado al servidor SPIN. A la escucha de tramas..." );
+		if( err ){ logger.error( "[SPIN API] Error al conectarse al servidor de SPIN." ); return; }
+
+		logger.info( "[SPIN API] Conectado satisfactoriamente, a la escucha de tramas." );
+		console.log( "[SPIN API] Conectado al servidor SPIN. A la escucha de tramas..." );
 
 	});
 
@@ -33,16 +35,17 @@ module.exports = function( app){
 
 	app.get('/spincliente/:maquina/datos', async (req, res, next) => {
 
-		/* let fecha = formatDate(new Date(), 'mm/dd/yy');
-		let hora = (new Date()).toLocaleTimeString();
-		let ip = req.socket.remoteAddress; */
+		let fecha = formatDate(new Date(), 'mm/dd/yy');
+		let hora = (new Date()).toLocaleTimeString('es-ES');
+		let ip = req.socket.remoteAddress;
 
 		cliente.write( getTrama( req.params.maquina ), function(err){
 			
-			if( err ){ throw err }
+			if( err ){ logger.error( "[SPIN API]["+fecha+"-"+hora+"]["+ip+"] Error al enviar la trama al servidor." ); return; }
 
 			cliente.once( "data", function(data){
 
+				logger.info( "[SPIN API]["+fecha+"-"+hora+"]["+ip+"] Enviado datos de la máquina " + req.params.maquina );
 				res.status(200).json( { datos: data + "" } );
 
 			} );
