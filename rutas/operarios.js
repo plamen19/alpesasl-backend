@@ -35,5 +35,23 @@ module.exports = function(app, sql){
 
 	});
 	// ----------------------------------------------
+
+	/* 
+	
+		TABLA: dbo.tblCategorias
+		CONSULTA: Devuelve todos los grupos de operarios de la base de datos.
+	
+	*/
+	app.get('/operarios/categorias', (req, res) => {
+
+		(new sql.Request()).query('SELECT * FROM dbo.tblCategorias', function (err, operarios) {
+
+			if (err) return res.json( { err: 'No se han podido obtener los registros.' } );
+
+			return res.json( operarios.recordset );
+		});
+
+	});
+	// ----------------------------------------------	
    
 }

@@ -3,8 +3,8 @@
 // var client = new ModbusRTU();
 
 // // Abrimos una conexión a través de TCP con el PLC
-// client.connectTCP("192.168.30.20", { port: 502 });
-// client.setID(4);
+// client.connectTCP("192.168.30.17", { port: 502 });
+// client.setID(2);
 
 // // read the values of 10 registers starting at address 0
 // // on device number 1. and log the values to the console.
@@ -38,7 +38,7 @@
 
 /* var net = require('net');
 
-let trama = '<EQUIPOMARCHA MAQUINA="P2"/>';
+let trama = '<DETALLEMAQUINA MAQUINA="P2"/><ESTADO/>';
 
 var client = new net.Socket();
 client.connect(100, '192.168.1.18', function() {
@@ -110,3 +110,21 @@ client.on('data', function(data) {
 
 // 	}
 // });
+
+/* const fins = require('omron-fins');
+const options = {timeout: 5000, SA1: 2, DA1: 1, protocol: "tcp"}; //protocol can be "udp" or "tcp" only
+const client = fins.FinsClient(9600, '192.168.30.20', options);
+
+client.connect();
+
+client.on('reply',msg=>{
+	console.log('SID: ', msg.sid);
+	console.log('Command Code: ', msg.command);
+	console.log('Response Code: ', msg.response);
+	console.log('Remote Host: ', msg.remotehost);
+});
+ */
+/* client.read('DM1300',7,function(err, msg) {
+	console.log(err);
+	console.log("msg: ", msg);
+});	*/

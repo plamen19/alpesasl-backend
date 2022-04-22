@@ -95,9 +95,15 @@ require('./rutas/maquinas')(app, sql);						/* Rutas de la API para la informaci
 
 require('./rutas/operaciones')(app, sql);						/* Rutas de la API para la información de las [OPERACIONES]. */
 
+require('./rutas/areas')(app, sql);						/* Rutas de la API para la información de las [AREAS]. */
+
+require('./rutas/embalajes')(app, sql);						/* Rutas de la API para la información de los [EMBALAJES]. */
+
+require('./rutas/intervenciones')(app, sql);					/* Rutas de la API para la información de las [INTERVENCIONES]. */
+
 require('./rutas/operarios')(app, sql);						/* Rutas de la API para la información de los [OPERARIOS]. */
 
-require('./rutas/logs')(app);						/* Rutas de la API para la información de los [LOGS]. */
+require('./rutas/logs')(app);							/* Rutas de la API para la información de los [LOGS]. */
 
 
 /* -------------------------------------------------------------------- */

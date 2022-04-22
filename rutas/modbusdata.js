@@ -6,7 +6,7 @@ module.exports = function( app, ModbusRTU ){
 		'PerfiladoraP1': '192.168.30.17',
 		'Mandriladora12B': '192.168.30.21',
 		'Mandriladora24B': '192.168.30.23',
-		'Mandriladora10M': '192.168.30.24',
+		'10M': '192.168.30.24',
 
 	}
 
@@ -28,11 +28,11 @@ module.exports = function( app, ModbusRTU ){
 				let client = new ModbusRTU();
 
 				client.connectTCP(ip_plc, { port: 502 }, ()=>{
-
+					
 					client.setID(1);
 
 					client.readHoldingRegisters(1300, 44, function(err, data) {
-						
+					
 						/*
 						
 							VALORES INVESTIGADOS
@@ -47,6 +47,8 @@ module.exports = function( app, ModbusRTU ){
 
 						if ( err ) { return res.json( { err: 'No se han podido cargar los datos.', detalles: err } ) }
 											
+						console.log(err);
+
 						client.close();
 	
 						client = null; /* Borramos el objeto del cliente para liberar memoria. */
