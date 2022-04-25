@@ -23,15 +23,6 @@ module.exports = function( app, logger ){
 
 	}
 
-	cliente.connect(100, '192.168.1.18', function( err ) {
-					
-		if( err ){ logger.error( "[SPIN API]["+ getFechaHora() +"] Error al conectarse al servidor de SPIN." ); return; }
-
-		logger.info( "[SPIN API]["+ getFechaHora() +"] Conectado satisfactoriamente, a la escucha de tramas." );
-		console.log( "[SPIN API]["+ getFechaHora() +"] Conectado al servidor SPIN. A la escucha de tramas..." );
-
-	});
-
 	/* 
 		PARAMETRO: Código de la máquina (12B, P2...)
 		RETORNA: El texto de la trama codificado para el servidor de SPIN.
@@ -39,6 +30,19 @@ module.exports = function( app, logger ){
 	function getTrama( maquina ){
 
 		return '<DETALLEMAQUINA MAQUINA="' + maquina + '"><ESTADO/>';
+
+	}
+
+	function conectarSPIN(){
+
+		cliente.connect(100, '192.168.1.18', function( err ) {
+					
+			if( err ){ logger.error( "[SPIN API]["+ getFechaHora() +"] Error al conectarse al servidor de SPIN." ); return; }
+	
+			logger.info( "[SPIN API]["+ getFechaHora() +"] Conectado satisfactoriamente, a la escucha de tramas." );
+			console.log( "[SPIN API]["+ getFechaHora() +"] Conectado al servidor SPIN. A la escucha de tramas..." );
+
+		});	
 
 	}
 
@@ -60,5 +64,7 @@ module.exports = function( app, logger ){
 		} );
 
 	});
+
+	conectarSPIN();
 
 }
