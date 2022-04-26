@@ -159,7 +159,7 @@ module.exports = function(app, sql){
 	*/
 	app.get('/maquina/:id/boletinID', (req, res) => {
 
-		(new sql.Request()).query('SELECT TOP 1 * FROM dbo.tblProceso WHERE idMaquina = ' + req.params.id + ' ORDER BY Fecha DESC', function (err, maquinas) {
+		(new sql.Request()).query('SELECT TOP 1 * FROM dbo.tblBoletines WHERE idMaquina = ' + req.params.id + ' ORDER BY InicioBoletin DESC', function (err, maquinas) {
 
 			if (err) return res.json( { err: 'No se han podido obtener los registros.' } );
 

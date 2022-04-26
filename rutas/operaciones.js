@@ -8,7 +8,7 @@ module.exports = function(app, sql){
 	*/
 	app.get('/operaciones', (req, res) => {
 
-		(new sql.Request()).query('SELECT TOP 10 * FROM dbo.tblOperaciones ORDER BY idOperacion DESC', function (err, operaciones) {
+		(new sql.Request()).query('SELECT TOP 50 * FROM dbo.tblOperaciones ORDER BY idOperacion DESC', function (err, operaciones) {
 
 			if (err) return res.json( { err: 'No se han podido obtener los registros.' } );
 
