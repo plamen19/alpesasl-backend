@@ -184,7 +184,7 @@ module.exports = function(app, sql){
 
 				let c_almacenada = new sql.Request();
 
-				let idequipo = await c_almacenada.input( "idMaquina", 5 ).execute( "procTerminal_EquiposProduccionVerActivo" );	
+				let idequipo = await c_almacenada.input( "idMaquina", req.params.id ).execute( "procTerminal_EquiposProduccionVerActivo" );	
 				let idequipoprod = idequipo.recordset[0].idEquipoProduccion[0];
 		
 				let operarios = await c_almacenada.input("idEquipoProduccion", idequipoprod).execute( "procTerminal_OperariosProduccionVer" );
@@ -243,7 +243,7 @@ module.exports = function(app, sql){
 		CONSULTA: Devuelve un array con los datos de producción para calcular el % de Merma generado.
 	
 	*/
-	app.post('/maquina/:id/merma', (req, res) => {
+	app.post('/maquina/:id/indicadores', (req, res) => {
 
 		try{
 
@@ -261,6 +261,74 @@ module.exports = function(app, sql){
 			}
 
 			getMermaGenerada();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// --------------------------------------------------------------------------------------------
+
+	/* 
+	
+		PROCEDIMIENTOS: procTerminal_BoletinesVerEnEspera
+		PARÁMETROS: idMaquina
+		CONSULTA: Devuelve un array con los boletines pendientes.
+	
+	*/
+	app.get('/maquina/:id/boletines', (req, res) => {
+
+		try{
+
+			let getBoletinesEnEspera = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let boletines_espera = await c_almacenada
+					.input( "idMaquina", req.params.id )
+					.execute( "procTerminal_BoletinesVerEnEspera" );	
+				
+				return res.json( boletines_espera.recordset );
+			}
+
+			getBoletinesEnEspera();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// --------------------------------------------------------------------------------------------
+
+	/* 
+	
+		PROCEDIMIENTOS: procTerminal_IntervencionesVerTodas
+		PARÁMETROS: idMaquina
+		CONSULTA: Devuelve un array con todas las intervenciones sobre la máquina.
+	
+	*/
+	app.get('/maquina/:id/intervenciones', (req, res) => {
+
+		try{
+
+			let getIntervenciones = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let intervenciones_todas = await c_almacenada
+					.input( "idMaquina", req.params.id )
+					.execute( "procTerminal_IntervencionesVerTodas" );	
+				
+				return res.json( intervenciones_todas.recordset );
+			}
+
+			getIntervenciones();
 	
 		}catch( err ){
 

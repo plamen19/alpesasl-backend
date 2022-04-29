@@ -112,19 +112,21 @@ client.on('data', function(data) {
 // });
 
 /* const fins = require('omron-fins');
-const options = {timeout: 5000, SA1: 2, DA1: 1, protocol: "tcp"}; //protocol can be "udp" or "tcp" only
+const options = {timeout: 2000, SA1: 2, DA1: 1, protocol: "udp"}; //protocol can be "udp" or "tcp" only
 const client = fins.FinsClient(9600, '192.168.30.20', options);
 
 client.connect();
 
-client.on('reply',msg=>{
-	console.log('SID: ', msg.sid);
-	console.log('Command Code: ', msg.command);
-	console.log('Response Code: ', msg.response);
-	console.log('Remote Host: ', msg.remotehost);
-});
- */
-/* client.read('DM1300',7,function(err, msg) {
-	console.log(err);
-	console.log("msg: ", msg);
-});	*/
+setInterval( function(){
+
+	client.read('W8.02',1,function(err, msg) {
+
+		if( msg && msg.response && msg.response.values ){
+
+			console.log("msg: ", msg.response.values);
+
+		}
+
+	});
+
+}, 500 ) */

@@ -35,5 +35,73 @@ module.exports = function(app, sql){
 
 	});
 	// ----------------------------------------------
+
+	/* 
+	
+		PROCEDIMIENTO: procTerminal_ComentariosVerPorOrden
+		PARÁMETROS: codOperacion
+		CONSULTA: Array con los comentarios enviados a esa orden.
+	
+	*/
+	app.get('/operacion/:id/comentarios', (req, res) => {
+
+		try{
+
+			let getComentariosOrden = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let comentarios = await c_almacenada
+					.input( "codOrden", req.params.id )
+					.execute( "procTerminal_ComentariosVerPorOrden" );	
+				
+				return res.json( comentarios.recordset );
+			}
+
+			getComentariosOrden();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// ----------------------------------------------	
+
+	/* 
+	
+		PROCEDIMIENTO: procTerminal_InfoAdicionalVer
+		PARÁMETROS: idOperacion
+		CONSULTA: Array con la información adicional de la operación.
+	
+	*/
+	app.get('/operacion/:id/info', (req, res) => {
+
+		try{
+
+			let getInformacionAdicional = async ()=>{
+
+				let c_almacenada = new sql.Request();
+
+				let info_adicional = await c_almacenada
+					.input( "idOperacion", req.params.id )
+					.execute( "procTerminal_InfoAdicionalVer" );	
+				
+				return res.json( info_adicional.recordset );
+			}
+
+			getInformacionAdicional();
+	
+		}catch( err ){
+
+			console.log(err);
+			return res.json( { error: err } );
+
+		}
+
+	});
+	// ----------------------------------------------		
    
 }
