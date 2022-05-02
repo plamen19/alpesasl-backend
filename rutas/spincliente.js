@@ -1,6 +1,7 @@
 module.exports = function( app, logger ){
 
 	let Net = require('net');
+	let parseString = require('xml2js').parseString;
 	let cliente = Net.Socket();
 
 	function formatDate(date, format) {
@@ -35,14 +36,23 @@ module.exports = function( app, logger ){
 
 	function conectarSPIN(){
 
-		cliente.connect(100, '192.168.1.18', function( err ) {
-					
-			if( err ){ logger.error( "[SPIN API]["+ getFechaHora() +"] Error al conectarse al servidor de SPIN." ); return; }
-	
-			logger.info( "[SPIN API]["+ getFechaHora() +"] Conectado satisfactoriamente, a la escucha de tramas." );
-			console.log( "[SPIN API]["+ getFechaHora() +"] Conectado al servidor SPIN. A la escucha de tramas..." );
+		try{
 
-		});	
+			cliente.connect(100, '192.168.1.18', function( err ) {
+					
+				if( err ){ logger.error( "[SPIN API]["+ getFechaHora() +"] Error al conectarse al servidor de SPIN." ); return; }
+		
+				logger.info( "[SPIN API]["+ getFechaHora() +"] Conectado satisfactoriamente, a la escucha de tramas." );
+				console.log( "[SPIN API]["+ getFechaHora() +"] Conectado al servidor SPIN. A la escucha de tramas..." );
+	
+			});
+
+		}catch( err ){
+
+			logger.error( "[SPIN API][" + getFechaHora() + "] No se ha podido conectar con el servidor de SPIN. Reintentando en dos segundos..." );
+			setTimeout( function(){ conectarSPIN(); }, 2000 )
+			
+		}
 
 	}
 
@@ -66,5 +76,14 @@ module.exports = function( app, logger ){
 	});
 
 	conectarSPIN();
+
+	cliente.on('close', () => {
+
+		console.log("[SPIN API] La API ha sido expulsada de la sesión. Reintentando conexión con SPIN en dos segundos...");
+		logger.error( "[SPIN API][" + getFechaHora() + "] Cliente expulsado de la sesión. Realizando reintento..." );
+		setTimeout( function(){ conectarSPIN(); }, 2000 )
+		cliente.destroy();
+		
+	});	
 
 }

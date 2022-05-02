@@ -3,14 +3,14 @@
 // var client = new ModbusRTU();
 
 // // Abrimos una conexión a través de TCP con el PLC
-// client.connectTCP("192.168.30.17", { port: 502 });
-// client.setID(2);
+// client.connectTCP("192.168.30.18", { port: 502 });
+// client.setID(4);
 
 // // read the values of 10 registers starting at address 0
 // // on device number 1. and log the values to the console.
 // setInterval(function () {
 
-// 	client.readHoldingRegisters(1300, 50, function(err, data) {
+// 	client.readHoldingRegisters(1500, 1, function(err, data) {
 
 // 		/*
 
@@ -110,23 +110,23 @@ client.on('data', function(data) {
 
 // 	}
 // });
+// const fins = require('omron-fins');
+// const options = {timeout: 2000, SA1: 10, DA1: 1, protocol: "tcp"}; //protocol can be "udp" or "tcp" only
+// const client = fins.FinsClient(9600, '192.168.30.23', options);
 
-/* const fins = require('omron-fins');
-const options = {timeout: 2000, SA1: 2, DA1: 1, protocol: "udp"}; //protocol can be "udp" or "tcp" only
-const client = fins.FinsClient(9600, '192.168.30.20', options);
+// client.connect();
 
-client.connect();
+// setInterval( function(){
 
-setInterval( function(){
+// 	/* Cuando se hace un corte [0,1] W8.02 */
+// 	client.read('D1307',1,function(err, msg) {
 
-	client.read('W8.02',1,function(err, msg) {
+// 		if( msg && msg.response && msg.response.values ){
+			
+// 			console.log(msg.response.buffer);
 
-		if( msg && msg.response && msg.response.values ){
+// 		}
 
-			console.log("msg: ", msg.response.values);
+// 	});
 
-		}
-
-	});
-
-}, 500 ) */
+// }, 500 )
